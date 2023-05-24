@@ -14,7 +14,7 @@ mqttclient = paho.Client(client_uniq, True)
 
 def storeData(mesg):
   #Create a connection to MySQL Database 
-  conn =pymysql.connect(database="greeshma",user="user",password="PASS",host="localhost")
+  conn=pymysql.connect(database="greeshma",user="user",password="PASS",host="localhost")
   #Create a MySQL Cursor to that executes the SQLs
   cur=conn.cursor()
   #Create a dictonary containing the fields, name, age and place
@@ -32,12 +32,13 @@ def storeData(mesg):
 def test(client, userdata, message):
   print("client:"+ str(client))
   print("userdata:"+ str(userdata))
-  print("message:"+ str(message.payload))
+  #print("message:"+ str(message.payload))
+  print("message:"+ str(message.payload.decode()))
 
 def _on_message(client, userdata, msg):
 	#print("Received: Topic: %s Body: %s", msg.topic, msg.payload)
 	#message.payload.decode()
-	print(msg.topic+" "+str(msg.payload.decode()))
+	print(msg.topic+" "+str(msg.payload))
 	 
 #Subscribed Topics 
 def _on_connect(mqttclient, userdata, flags, rc):
