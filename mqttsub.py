@@ -1,5 +1,5 @@
 import paho.mqtt.client as paho
-
+import pymysql;
 global mqttclient;
 global broker;
 global port;
@@ -33,7 +33,7 @@ def test(client, userdata, message):
   print("client:"+ str(client))
   print("userdata:"+ str(userdata))
   #print("message:"+ str(message.payload))
-  print("message:"+ str(message.payload.decode()))
+  print("message:"+ (message.payload.decode()))
 
 def _on_message(client, userdata, msg):
 	#print("Received: Topic: %s Body: %s", msg.topic, msg.payload)
