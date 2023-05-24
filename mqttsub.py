@@ -35,7 +35,8 @@ def test(client, userdata, message):
   print("message:"+ str(message.payload))
 
 def _on_message(client, userdata, msg):
-# 	print("Received: Topic: %s Body: %s", msg.topic, msg.payload)
+	print("Received: Topic: %s Body: %s", msg.topic, msg.payload)
+	message.payload.decode()
 	print(msg.topic+" "+str(msg.payload))
 	 
 #Subscribed Topics 
