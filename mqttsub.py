@@ -36,8 +36,8 @@ def test(client, userdata, message):
 
 def _on_message(client, userdata, msg):
 	#print("Received: Topic: %s Body: %s", msg.topic, msg.payload)
-	message.payload.decode()
-	print(msg.topic+" "+str(msg.payload))
+	#message.payload.decode()
+	print(msg.topic+" "+str(msg.payload.decode()))
 	 
 #Subscribed Topics 
 def _on_connect(mqttclient, userdata, flags, rc):
