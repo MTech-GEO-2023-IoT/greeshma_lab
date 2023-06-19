@@ -19,8 +19,8 @@ mysql = MySQL()
 
 #Configure MySQL
 app.config['MYSQL_DATABASE_USER'] = 'user'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
-app.config['MYSQL_DATABASE_DB'] = 'your-mysql-database'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'PASS'
+app.config['MYSQL_DATABASE_DB'] = 'greeshma'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
 #initialise MySQL (connect to mysql)
