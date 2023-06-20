@@ -14,8 +14,42 @@ devices = c.getdevices()
 result = c.getstatus("8062300084cca891796a")
 print("Status of device:\n", result)
 sw1 = result["result"][0]['value']
-print(sw1)
+#print(sw1)
+sw2 = result["result"][1]['value']
+#print(sw2)
+sw3 = result["result"][2]['value']
+#print(sw3)
+sw4 = result["result"][3]['value']
+#print(sw4)
 
+
+#Here the conversion co efficent used for the electrical energy to carbon foot print = .95 per kWh
+if sw1==true:
+   P1 = 1*.95
+else: 
+   P1 = 0*.95
+
+if sw2==true:
+   P2 = 1*.95
+else: 
+   P2 = 0*.95
+
+if sw3==true:
+   P3 = 1*.95
+else: 
+   P3 = 0*.95
+
+if sw4==true:
+   P4 = 1*.95
+else: 
+   P4 = 0*.95
+
+P = P1+P2+P3+P4
+
+Print("Total power consumed" + P) 
+
+
+ 
 
 
 
