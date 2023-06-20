@@ -25,21 +25,21 @@ sw4 = result["result"][3]['value']
 
 #Here the conversion co efficent used for the electrical energy to carbon foot print = .95 per kWh
 #bulb socket
-if sw1==true:
+if sw1==True:
    P1 = 10
 else: 
    P1 = 0
 
-if sw2==true:
+if sw2==True:
    P2 = 15
 else: 
    P2 = 0
 #charger point
-if sw3==true:
+if sw3==True:
    P3 = 50
 else: 
    P3 = 0
-if sw4==true:
+if sw4==True:
    P4 = 75
 else: 
    P4 = 0 
