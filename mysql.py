@@ -5,7 +5,7 @@ import pymysql
 conn =pymysql.connect(database="greeshma",user="user",password="PASS",host="localhost")
 #Create a MySQL Cursor to that executes the SQLs
 cur=conn.cursor()
-#Create a dictonary containing the fields, name, age and place
+#Create a dictonary containing the fields, switch , its power data
 data={'topic':'Iot sensor','Sensorvalue':50}
 #Execute the SQL to write data to the database
 cur.execute("INSERT INTO sensordata(topic, Sensorvalue)VALUES(%(name)s,%(int);",data)
