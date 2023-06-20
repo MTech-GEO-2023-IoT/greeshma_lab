@@ -44,6 +44,8 @@ if sw4==true:
 else: 
    P4 = 0 
 
+Print(P1, P2, P3, P4)
+
 
  
 
