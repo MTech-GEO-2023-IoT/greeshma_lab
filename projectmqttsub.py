@@ -12,7 +12,7 @@ def storeData(mesg,t):
  conn =pymysql.connect(database="greeshma",user="user",password="PASS",host="localhost")
  #Create a MySQL Cursor to that executes the SQLs
  cur=conn.cursor()
- #Create a dictonary containing the fields, name, age and place
+ #Create a dictonary containing the fields, switch status and power deatils
  data={'topic':t,'data':mesg}
  #Execute the SQL to write data to the database
  cur.execute("INSERT INTO Sensordata(Topic , Sensorvalue)VALUES(%(topic)s,%(data)s);",data)
