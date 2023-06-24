@@ -110,9 +110,6 @@ while True:
 
     # Wait for 1 minute before capturing the next data
     time.sleep(60)
-
-
-
 import pymysql
 
 # Create a connection to MySQL Database
@@ -125,9 +122,9 @@ cur.execute("SELECT HOUR(FROM_UNIXTIME(timestamp)) AS hour, AVG(P1 + P2 + P3 + P
 average_data = cur.fetchall()
 
 for row in average_data:
-    hour = row[0]
+    minute = row[0]
     avg_power = row[1]
-    print("Hour:", hour)
+    print("minute:", minute)
     print("Average Power Consumption:", avg_power)
 
 # Calculate total electricity consumption
@@ -136,8 +133,10 @@ total_power = float(cur.fetchone()[0])
 
 print("Total Power Consumption:", total_power)
  
-Electricity = total_power *  hour
+Electricity = total_power *  minute/60
 
 # Calculate carbon emission
 carbon_emission = (Electricity / 1000) * 0.85
 print("Carbon Emission in kg of co2 :", carbon_emission)
+
+
