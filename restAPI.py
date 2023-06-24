@@ -1,29 +1,88 @@
-#!/usr/bin/python
-#(c)Sai Shibu
-#201904170935ISTV1
-#Sample program for Rest APIs
-#Install Required Packages
-#	1)Flask (pip install Flask)
-#	2)Flask-ext MySQL (pip install Flask-MySQL)
-#	3)Flask - Jsonify(mostly included with Flask)
+import tinytuya
+import json
+import pymysql
+import paho.mqtt.client as mqtt
+import time
 
-#import necessary modules
-from flask import Flask, jsonify,request
-from flaskext.mysql import MySQL
+# tinytuya.set_debug(True)
 
-#assign a Flask Class
-app=Flask(__name__)
+c = tinytuya.Cloud(
+        apiRegion="in", 
+        apiKey="fg84rkadavg8u3buzodi", 
+        apiSecret="cff6cca0f15346f682b59ea86123f56c", 
+        apiDeviceID="8062300084cca891796a")
 
-@app.route('/')
+devices = c.getdevices()
+# print("Device List: %r" % devices)
 
-#Give a funtion name
-def welcome():
+# Create a connection to MySQL Database
+conn = pymysql.connect(database="workingtime", user="user", password="PASS", host="localhost")
+# Create a MySQL Cursor that executes the SQLs
+cur = conn.cursor()
 
-#return is the data given by the API
-	return "\tWelcome.... \tKindly use one of the APIs to get data"
+while True:
+    result = c.getstatus("8062300084cca891796a")
+    print("Status of device:\n", result)
+    sw1 = result["result"][0]['value']
+    #print(sw1)
+    sw2 = result["result"][1]['value']
+    #print(sw2)
+    sw3 = result["result"][2]['value']
+    #print(sw3)
+    sw4 = result["result"][3]['value']
+    #print(sw4)
+    # Here the conversion coefficient used for the electrical energy to carbon footprint = 0.95 per kWh
+    # Bulb socket
+    if sw1 == True:
+        P1 = 10
+    else:
+        P1 = 0
+    if sw2 == True:
+        P2 = 15
+    else:
+        P2 = 0
+    # Charger point
+    if sw3 == True:
+        P3 = 50
+    else:
+        P3 = 0
+    if sw4 == True:
+        P4 = 75
+    else:
+        P4 = 0 
 
-#Start the Flask program
-if __name__ == '__main__':
-#app.run will make the APIs available on this particular IP address and Port 5000
-#0.0.0.0  ip means any one can access.
-    app.run(host="0.0.0.0",debug=1)
+    print(P1, P2, P3, P4)
+
+    payload = sw4
+    topic = "sensordata"
+    client = mqtt.Client()
+    client.connect('0.0.0.0', 1883, 60)
+    rc, mid = client.publish(topic, payload)
+    client.disconnect()
+
+    # Create a dictionary containing the fields, switch, and its power data
+    data = {
+        'sw1': sw1,
+        'P1': P1,
+        'sw2': sw2,
+        'P2': P2,
+        'sw3': sw3,
+        'P3': P3,
+        'sw4': sw4,
+        'P4': P4
+    }
+    # Execute the SQL query to insert data into the database
+    cur.execute("""
+        INSERT INTO sensordata (timestamp, sw1, P1, sw2, P2, sw3, P3, sw4, P4)
+        VALUES (UNIX_TIMESTAMP(), %(sw1)s, %(P1)s, %(sw2)s, %(P2)s, %(sw3)s, %(P3)s, %(sw4)s, %(P4)s);
+    """, data)
+    # Commit the data to the database
+    conn.commit()
+
+    # Wait for 1 minute before capturing the next data
+    time.sleep(60)
+
+# Close the cursor
+cur.close()
+# Close the connection to the database
+conn.close()
