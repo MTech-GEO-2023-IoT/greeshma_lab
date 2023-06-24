@@ -110,3 +110,34 @@ while True:
 
     # Wait for 1 minute before capturing the next data
     time.sleep(60)
+
+
+
+import pymysql
+
+# Create a connection to MySQL Database
+conn = pymysql.connect(database="workingtime", user="user", password="PASS", host="localhost")
+# Create a MySQL Cursor that executes the SQLs
+cur = conn.cursor()
+
+# Calculate average time worked per hour
+cur.execute("SELECT HOUR(FROM_UNIXTIME(timestamp)) AS hour, AVG(P1 + P2 + P3 + P4) AS avg_power FROM sensordat>
+average_data = cur.fetchall()
+
+for row in average_data:
+    hour = row[0]
+    avg_power = row[1]
+    print("Hour:", hour)
+    print("Average Power Consumption:", avg_power)
+
+# Calculate total electricity consumption
+cur.execute("SELECT SUM(P1 + P2 + P3 + P4) AS total_power FROM sensordata1;")
+total_power = float(cur.fetchone()[0])
+
+print("Total Power Consumption:", total_power)
+ 
+Electricity = total_power *  hour
+
+# Calculate carbon emission
+carbon_emission = (Electricity / 1000) * 0.85
+print("Carbon Emission in kg of co2 :", carbon_emission)
